@@ -1,0 +1,5 @@
+../../jgame.js/lib/webaudio.d.ts
+../../jgame.js/lib/jgame.d.ts
+jgui.ts
+--out ../js/ui.jgame.js
+--declaration
