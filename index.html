@@ -8,15 +8,58 @@
 window.onload = function() {
 	game = new Game(480, 480);
 	var scene = game.scene;
+	var focusManager = new jgui.FocusManager(game);
 	var btn = new jgui.Button(100, 40);
-	btn.moveTo(100, 100);
+	btn.moveTo(0, 0);
 	scene.append(btn);
+	btn.click.handle(function() {
+		console.log("button click");
+	});
+	focusManager.addEntity(btn);
+
+	var btn = new jgui.Button(200, 40);
+	btn.moveTo(0, 60);
+	scene.append(btn);
+	focusManager.addEntity(btn);
+
+	var btn = new jgui.Button(100, 100);
+	btn.moveTo(0, 120);
+	scene.append(btn);
+	focusManager.addEntity(btn);
+
+	var btn = new jgui.Button(100, 20);
+	btn.moveTo(0, 240);
+	scene.append(btn);
+	focusManager.addEntity(btn);
 
 	var textBtn = new jgui.TextButton("START", 100, 40);
-	textBtn.moveTo(100, 0);
+	textBtn.moveTo(240, 0);
 	scene.append(textBtn);
+	textBtn.click.handle(function() {
+		console.log("text button click");
+	});
+	focusManager.addEntity(textBtn);
+
+	var textBtn = new jgui.TextButton("START", 200, 40);
+	textBtn.moveTo(240, 60);
+	scene.append(textBtn);
+	focusManager.addEntity(textBtn);
+
+	var textBtn = new jgui.TextButton("START", 100, 100);
+	textBtn.moveTo(240, 120);
+	scene.append(textBtn);
+	focusManager.addEntity(textBtn);
+
+	var textBtn = new jgui.TextButton("START", 100, 20);
+	textBtn.moveTo(240, 240);
+	scene.append(textBtn);
+	focusManager.addEntity(textBtn);
 
 	scene.enablePointingEvent();
+	focusManager.start();
+	focusManager.selected.handle(function(e) {
+		alert("clicked x:"+e.x+",y:"+e.y+" element");
+	});
 }
 </script>
 </head>

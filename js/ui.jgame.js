@@ -28,8 +28,6 @@ var jgui;
             this.state = ButtonState.Normal;
             this.click = new Trigger();
         }
-        Button.prototype.focus = function () {
-        };
         Button.prototype._createBg = function (color) {
             var canvas = window.createCanvas(this.width, this.height);
             var ctx = canvas.getContext("2d");
@@ -122,4 +120,129 @@ var jgui;
         return TextButton;
     })(Button);
     jgui.TextButton = TextButton;    
+    var Focus = (function (_super) {
+        __extends(Focus, _super);
+        function Focus() {
+                _super.call(this);
+            this.disableTransform = true;
+            this.color = "#ffff00";
+        }
+        Focus.prototype.focus = function (target) {
+            this.target = target;
+        };
+        Focus.prototype.draw = function (context) {
+            if(!this.target) {
+                return;
+            }
+            context.translate(this.target.x, this.target.y);
+            this.scene.game.renderer.useDrawOption(this.target, context);
+            context.beginPath();
+            context.strokeStyle = this.color;
+            context.lineWidth = 3;
+            context.rect(0, 0, this.target.width, this.target.height);
+            context.stroke();
+        };
+        return Focus;
+    })(E);
+    jgui.Focus = Focus;    
+    var FocusManager = (function () {
+        function FocusManager(game) {
+            this.entities = new Array();
+            this.game = game;
+            this.selected = new Trigger();
+        }
+        FocusManager.prototype.addEntity = function () {
+            var e = [];
+            for (var _i = 0; _i < (arguments.length - 0); _i++) {
+                e[_i] = arguments[_i + 0];
+            }
+            for(var i = 0; i < e.length; i++) {
+                this.entities.push(e[i]);
+            }
+        };
+        FocusManager.prototype.removeEntity = function () {
+            var e = [];
+            for (var _i = 0; _i < (arguments.length - 0); _i++) {
+                e[_i] = arguments[_i + 0];
+            }
+            var entities = new Array();
+            for(var i = 0, j; i < this.entities.length; i++) {
+                for(j = 0; j < e.length; j++) {
+                    if(this.entities[i] == e[j]) {
+                        break;
+                    }
+                }
+                if(j == e.length) {
+                    entities.push(this.entities[i]);
+                }
+            }
+            this.entities = entities;
+            if(this.focusIndex >= this.entities.length) {
+                if(this.entities.length == 0) {
+                    this.focusIndex = -1;
+                } else {
+                    this.focusIndex = 0;
+                }
+                this.updateFocus();
+            }
+        };
+        FocusManager.prototype.clearEntity = function () {
+            this.entities = new Array();
+        };
+        FocusManager.prototype.setFocus = function (e) {
+            for(var i = 0; i < this.entities.length; i++) {
+                if(e == this.entities[i]) {
+                    this.focusIndex = i;
+                    this.updateFocus();
+                    break;
+                }
+            }
+        };
+        FocusManager.prototype.updateFocus = function () {
+            if(this.focusIndex == -1) {
+                delete this.focus.target;
+            } else {
+                this.focus.target = this.entities[this.focusIndex];
+                this.focus.updated();
+            }
+        };
+        FocusManager.prototype.start = function () {
+            this.game.keyDown.handle(this, this.onKeyDown);
+            this.focus = new Focus();
+            this.game.scene.append(this.focus);
+            this.focusIndex = -1;
+            this.updateFocus();
+        };
+        FocusManager.prototype.end = function () {
+            this.game.keyDown.remove(this, this.onKeyDown);
+            this.focus.remove();
+        };
+        FocusManager.prototype.onKeyDown = function (e) {
+            switch(e.key) {
+                case Keytype.Left:
+                case Keytype.Up:
+                    this.focusIndex--;
+                    if(this.focusIndex < 0) {
+                        this.focusIndex = this.entities.length - 1;
+                    }
+                    this.updateFocus();
+                    break;
+                case Keytype.Right:
+                case Keytype.Down:
+                    this.focusIndex++;
+                    if(this.focusIndex >= this.entities.length) {
+                        this.focusIndex = 0;
+                    }
+                    this.updateFocus();
+                    break;
+                case Keytype.Enter:
+                    if(this.focus.target) {
+                        this.selected.fire(this.focus.target);
+                    }
+                    break;
+            }
+        };
+        return FocusManager;
+    })();
+    jgui.FocusManager = FocusManager;    
 })(jgui || (jgui = {}));
