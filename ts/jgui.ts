@@ -74,7 +74,7 @@ module jgui {
 			this.stateChange(ButtonState.Normal);
 
 			if (this.hitTest(e.point))
-				this.click.fire();
+				this.click.fire(this);
 		}
 
 		stateChange(state:ButtonState) {
@@ -94,7 +94,7 @@ module jgui {
 				this.width,
 				this.height,
 				0,
-					0,
+				0,
 				this.width,
 				this.height
 			);
@@ -112,6 +112,13 @@ module jgui {
 			this.entities = new E[];
 			this.append(this.label);
 			this.label.moveTo(this.width / 2, this.height / 2);
+		}
+
+		getText() {
+			return this.label.text;
+		}
+		setText(text:string) {
+			this.label.setText(text);
 		}
 
 		stateChange(state:ButtonState) {
@@ -219,10 +226,13 @@ module jgui {
 			}
 		}
 
-		start() {
+		start(layer?:Layer) {
 			this.game.keyDown.handle(this, this.onKeyDown);
 			this.focus = new Focus();
-			this.game.scene.append(this.focus);
+			if (layer)
+				layer.append(this.focus);
+			else
+				this.game.scene.append(this.focus);
 			this.focusIndex = -1;
 			this.updateFocus();
 		}

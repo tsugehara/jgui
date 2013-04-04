@@ -78,7 +78,7 @@ var jgui;
         Button.prototype.onPointUp = function (e) {
             this.stateChange(ButtonState.Normal);
             if(this.hitTest(e.point)) {
-                this.click.fire();
+                this.click.fire(this);
             }
         };
         Button.prototype.stateChange = function (state) {
@@ -107,6 +107,12 @@ var jgui;
             this.append(this.label);
             this.label.moveTo(this.width / 2, this.height / 2);
         }
+        TextButton.prototype.getText = function () {
+            return this.label.text;
+        };
+        TextButton.prototype.setText = function (text) {
+            this.label.setText(text);
+        };
         TextButton.prototype.stateChange = function (state) {
             if(this.state != state) {
                 if(this.state == ButtonState.Down) {
@@ -206,10 +212,14 @@ var jgui;
                 this.focus.updated();
             }
         };
-        FocusManager.prototype.start = function () {
+        FocusManager.prototype.start = function (layer) {
             this.game.keyDown.handle(this, this.onKeyDown);
             this.focus = new Focus();
-            this.game.scene.append(this.focus);
+            if(layer) {
+                layer.append(this.focus);
+            } else {
+                this.game.scene.append(this.focus);
+            }
             this.focusIndex = -1;
             this.updateFocus();
         };

@@ -20,6 +20,8 @@ module jgui {
     class TextButton extends Button {
         public label: Label;
         constructor(text: string, width: number, height: number, color1?: any, color2?: any);
+        public getText(): string;
+        public setText(text: string): void;
         public stateChange(state: ButtonState): void;
     }
     class Focus extends E {
@@ -41,7 +43,7 @@ module jgui {
         public clearEntity(): void;
         public setFocus(e: E): void;
         public updateFocus(): void;
-        public start(): void;
+        public start(layer?: Layer): void;
         public end(): void;
         public onKeyDown(e: InputKeyboardEvent): void;
     }
