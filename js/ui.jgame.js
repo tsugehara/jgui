@@ -26,7 +26,7 @@ var jgui;
             this.pointUp.handle(this, this.onPointUp);
             this.createBg(color1, color2);
             this.state = ButtonState.Normal;
-            this.click = new Trigger();
+            this.click = new jg.Trigger();
         }
         Button.prototype._createBg = function (color) {
             var canvas = window.createCanvas(this.width, this.height);
@@ -46,13 +46,13 @@ var jgui;
         };
         Button.prototype.createBg = function (color1, color2) {
             if(!color1) {
-                color1 = JGUtil.createLinearGradient(new Rectangle(this.width / 2, 0, this.width / 2, this.height), [
+                color1 = jg.JGUtil.createLinearGradient(new jg.Rectangle(this.width / 2, 0, this.width / 2, this.height), [
                     "rgba(240,240,255,1)", 
                     "rgba(80, 120, 190, 1)"
                 ]);
             }
             if(!color2) {
-                color2 = JGUtil.createLinearGradient(new Rectangle(this.width / 2, 0, this.width / 2, this.height), [
+                color2 = jg.JGUtil.createLinearGradient(new jg.Rectangle(this.width / 2, 0, this.width / 2, this.height), [
                     "rgba(240,240,255,1)", 
                     "rgba(240,240,255,1)", 
                     "rgba(80, 120, 190, 1)"
@@ -93,17 +93,17 @@ var jgui;
             context.drawImage(img, 0, 0, this.width, this.height, 0, 0, this.width, this.height);
         };
         return Button;
-    })(E);
+    })(jg.E);
     jgui.Button = Button;    
     var TextButton = (function (_super) {
         __extends(TextButton, _super);
         function TextButton(text, width, height, color1, color2) {
                 _super.call(this, width, height, color1, color2);
-            this.label = new Label(text);
+            this.label = new jg.Label(text);
             this.label.setMaxWidth(this.width);
             this.label.setTextAlign("center");
             this.label.setTextBaseline("middle");
-            this.entities = new Array();
+            this.entities = [];
             this.append(this.label);
             this.label.moveTo(this.width / 2, this.height / 2);
         }
@@ -149,13 +149,13 @@ var jgui;
             context.stroke();
         };
         return Focus;
-    })(E);
+    })(jg.E);
     jgui.Focus = Focus;    
     var FocusManager = (function () {
         function FocusManager(game) {
-            this.entities = new Array();
+            this.entities = [];
             this.game = game;
-            this.selected = new Trigger();
+            this.selected = new jg.Trigger();
         }
         FocusManager.prototype.addEntity = function () {
             var e = [];
@@ -171,7 +171,7 @@ var jgui;
             for (var _i = 0; _i < (arguments.length - 0); _i++) {
                 e[_i] = arguments[_i + 0];
             }
-            var entities = new Array();
+            var entities = [];
             for(var i = 0, j; i < this.entities.length; i++) {
                 for(j = 0; j < e.length; j++) {
                     if(this.entities[i] == e[j]) {
@@ -193,7 +193,7 @@ var jgui;
             }
         };
         FocusManager.prototype.clearEntity = function () {
-            this.entities = new Array();
+            this.entities = [];
         };
         FocusManager.prototype.setFocus = function (e) {
             for(var i = 0; i < this.entities.length; i++) {
@@ -229,23 +229,23 @@ var jgui;
         };
         FocusManager.prototype.onKeyDown = function (e) {
             switch(e.key) {
-                case Keytype.Left:
-                case Keytype.Up:
+                case jg.Keytype.Left:
+                case jg.Keytype.Up:
                     this.focusIndex--;
                     if(this.focusIndex < 0) {
                         this.focusIndex = this.entities.length - 1;
                     }
                     this.updateFocus();
                     break;
-                case Keytype.Right:
-                case Keytype.Down:
+                case jg.Keytype.Right:
+                case jg.Keytype.Down:
                     this.focusIndex++;
                     if(this.focusIndex >= this.entities.length) {
                         this.focusIndex = 0;
                     }
                     this.updateFocus();
                     break;
-                case Keytype.Enter:
+                case jg.Keytype.Enter:
                     if(this.focus.target) {
                         this.selected.fire(this.focus.target);
                     }

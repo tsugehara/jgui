@@ -4,11 +4,11 @@ module jgui {
 		Down
 	}
 
-	export class Button extends E {
+	export class Button extends jg.E {
 		bg1:HTMLCanvasElement;
 		bg2:HTMLCanvasElement;
 		state:ButtonState;
-		click:Trigger;
+		click:jg.Trigger;
 
 		constructor(width:number, height:number, color1?:any, color2?:any) {
 			super();
@@ -21,7 +21,7 @@ module jgui {
 			this.pointUp.handle(this, this.onPointUp);
 			this.createBg(color1, color2);
 			this.state = ButtonState.Normal;
-			this.click = new Trigger();
+			this.click = new jg.Trigger();
 		}
 
 		_createBg(color:any) {
@@ -43,14 +43,14 @@ module jgui {
 
 		createBg(color1?:any, color2?:any) {
 			if (! color1) {
-				color1 = JGUtil.createLinearGradient(
-					new Rectangle(this.width / 2, 0, this.width / 2, this.height),
+				color1 = jg.JGUtil.createLinearGradient(
+					new jg.Rectangle(this.width / 2, 0, this.width / 2, this.height),
 					["rgba(240,240,255,1)", "rgba(80, 120, 190, 1)"]
 				);
 			}
 			if (! color2) {
-				color2 = JGUtil.createLinearGradient(
-					new Rectangle(this.width / 2, 0, this.width / 2, this.height),
+				color2 = jg.JGUtil.createLinearGradient(
+					new jg.Rectangle(this.width / 2, 0, this.width / 2, this.height),
 					["rgba(240,240,255,1)", "rgba(240,240,255,1)", "rgba(80, 120, 190, 1)"],
 					[0, 0.1, 1]
 				);
@@ -59,18 +59,18 @@ module jgui {
 			this.bg2 = this._createBg(color2);
 		}
 
-		onPointDown(e:InputPointEvent) {
+		onPointDown(e:jg.InputPointEvent) {
 			this.stateChange(ButtonState.Down);
 		}
 
-		onPointMove(e:InputPointEvent) {
+		onPointMove(e:jg.InputPointEvent) {
 			if (this.hitTest(e.point))
 				this.stateChange(ButtonState.Down);
 			else
 				this.stateChange(ButtonState.Normal);
 		}
 
-		onPointUp(e:InputPointEvent) {
+		onPointUp(e:jg.InputPointEvent) {
 			this.stateChange(ButtonState.Normal);
 
 			if (this.hitTest(e.point))
@@ -102,14 +102,14 @@ module jgui {
 	}
 
 	export class TextButton extends Button {
-		label:Label;
+		label:jg.Label;
 		constructor(text:string, width:number, height:number, color1?:any, color2?:any) {
 			super(width, height, color1, color2);
-			this.label = new Label(text);
+			this.label = new jg.Label(text);
 			this.label.setMaxWidth(this.width);
 			this.label.setTextAlign("center");
 			this.label.setTextBaseline("middle");
-			this.entities = new E[];
+			this.entities = [];
 			this.append(this.label);
 			this.label.moveTo(this.width / 2, this.height / 2);
 		}
@@ -133,8 +133,8 @@ module jgui {
 		}
 	}
 
-	export class Focus extends E {
-		target:E;
+	export class Focus extends jg.E {
+		target:jg.E;
 		color:any;
 		constructor() {
 			super();
@@ -142,7 +142,7 @@ module jgui {
 			this.color = "#ffff00";
 		}
 
-		focus(target:E) {
+		focus(target:jg.E) {
 			this.target = target;
 		}
 
@@ -165,25 +165,25 @@ module jgui {
 	}
 
 	export class FocusManager {
-		entities:E[];
-		game:Game;
+		entities:jg.E[];
+		game:jg.Game;
 		focus:Focus;
 		focusIndex:number;
-		selected:Trigger;
+		selected:jg.Trigger;
 
-		constructor(game:Game) {
-			this.entities = new E[];
+		constructor(game:jg.Game) {
+			this.entities = [];
 			this.game = game;
-			this.selected = new Trigger();
+			this.selected = new jg.Trigger();
 		}
 
-		addEntity(...e:E[]) {
+		addEntity(...e:jg.E[]) {
 			for (var i=0; i<e.length; i++)
 				this.entities.push(e[i]);
 		}
 
-		removeEntity(...e:E[]) {
-			var entities = new E[];
+		removeEntity(...e:jg.E[]) {
+			var entities = [];
 			for (var i=0, j; i<this.entities.length; i++) {
 				for (j=0; j<e.length; j++) {
 					if (this.entities[i] == e[j]) {
@@ -204,10 +204,10 @@ module jgui {
 		}
 
 		clearEntity() {
-			this.entities = new E[];
+			this.entities = [];
 		}
 
-		setFocus(e:E) {
+		setFocus(e:jg.E) {
 			for (var i=0; i<this.entities.length; i++) {
 				if (e == this.entities[i]) {
 					this.focusIndex = i;
@@ -226,7 +226,7 @@ module jgui {
 			}
 		}
 
-		start(layer?:Layer) {
+		start(layer?:jg.Layer) {
 			this.game.keyDown.handle(this, this.onKeyDown);
 			this.focus = new Focus();
 			if (layer)
@@ -242,23 +242,23 @@ module jgui {
 			this.focus.remove();
 		}
 
-		onKeyDown(e:InputKeyboardEvent) {
+		onKeyDown(e:jg.InputKeyboardEvent) {
 			switch (e.key) {
-			case Keytype.Left:
-			case Keytype.Up:
+			case jg.Keytype.Left:
+			case jg.Keytype.Up:
 				this.focusIndex--;
 				if (this.focusIndex < 0)
 					this.focusIndex = this.entities.length - 1;
 				this.updateFocus();
 			break;
-			case Keytype.Right:
-			case Keytype.Down:
+			case jg.Keytype.Right:
+			case jg.Keytype.Down:
 				this.focusIndex++;
 				if (this.focusIndex >= this.entities.length)
 					this.focusIndex = 0;
 				this.updateFocus();
 			break;
-			case Keytype.Enter:
+			case jg.Keytype.Enter:
 				if (this.focus.target)
 					this.selected.fire(this.focus.target);
 			break;

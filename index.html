@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <script type="text/javascript" src="../jgame.js/src/js/jgame.js"></script>
+<script type="text/javascript">
+jg.globalize();
+</script>
 <script type="text/javascript" src="js/ui.jgame.js"></script>
 <script type="text/javascript">
 window.onload = function() {
@@ -43,7 +46,7 @@ window.onload = function() {
 	var textBtn = new jgui.TextButton("START", 200, 40);
 	textBtn.moveTo(240, 60);
 	scene.append(textBtn);
-	focusManager.addEntity(textBtn);
+	//focusManager.addEntity(textBtn);
 
 	var textBtn = new jgui.TextButton("START", 100, 100);
 	textBtn.moveTo(240, 120);
