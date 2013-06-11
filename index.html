@@ -10,6 +10,9 @@ jg.globalize();
 <script type="text/javascript">
 window.onload = function() {
 	game = new Game(480, 480);
+	game.enablePointHandler();
+	game.enableKeyboardHandler();
+
 	var scene = game.scene;
 	var focusManager = new jgui.FocusManager(game);
 	var btn = new jgui.Button(100, 40);

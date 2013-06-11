@@ -1,12 +1,14 @@
-module jgui {
+declare module jgui {
     enum ButtonState {
         Normal,
         Down,
     }
+}
+declare module jgui {
     class Button extends jg.E {
         public bg1: HTMLCanvasElement;
         public bg2: HTMLCanvasElement;
-        public state: ButtonState;
+        public state: jgui.ButtonState;
         public click: jg.Trigger;
         constructor(width: number, height: number, color1?: any, color2?: any);
         public _createBg(color: any): HTMLCanvasElement;
@@ -14,16 +16,20 @@ module jgui {
         public onPointDown(e: jg.InputPointEvent): void;
         public onPointMove(e: jg.InputPointEvent): void;
         public onPointUp(e: jg.InputPointEvent): void;
-        public stateChange(state: ButtonState): void;
+        public stateChange(state: jgui.ButtonState): void;
         public draw(context: CanvasRenderingContext2D): void;
     }
-    class TextButton extends Button {
+}
+declare module jgui {
+    class TextButton extends jgui.Button {
         public label: jg.Label;
         constructor(text: string, width: number, height: number, color1?: any, color2?: any);
         public getText(): string;
         public setText(text: string): void;
-        public stateChange(state: ButtonState): void;
+        public stateChange(state: jgui.ButtonState): void;
     }
+}
+declare module jgui {
     class Focus extends jg.E {
         public target: jg.E;
         public color: any;
@@ -31,10 +37,12 @@ module jgui {
         public focus(target: jg.E): void;
         public draw(context: CanvasRenderingContext2D): void;
     }
+}
+declare module jgui {
     class FocusManager {
         public entities: jg.E[];
         public game: jg.Game;
-        public focus: Focus;
+        public focus: jgui.Focus;
         public focusIndex: number;
         public selected: jg.Trigger;
         constructor(game: jg.Game);

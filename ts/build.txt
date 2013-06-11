@@ -1,4 +1,8 @@
 ../../jgame.js/lib/jgame.d.ts
 jgui.ts
+Button.ts
+TextButton.ts
+Focus.ts
+FocusManager.ts
 --out ../js/ui.jgame.js
 --declaration
