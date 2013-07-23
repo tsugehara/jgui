@@ -6,3 +6,5 @@ Focus.ts
 FocusManager.ts
 --out ../js/ui.jgame.js
 --declaration
+--disallowbool
+--disallowimportmodule
