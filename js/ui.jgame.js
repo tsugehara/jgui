@@ -2,7 +2,6 @@ var jgui;
 (function (jgui) {
     (function (ButtonState) {
         ButtonState[ButtonState["Normal"] = 0] = "Normal";
-
         ButtonState[ButtonState["Down"] = 1] = "Down";
     })(jgui.ButtonState || (jgui.ButtonState = {}));
     var ButtonState = jgui.ButtonState;
@@ -64,7 +63,8 @@ var jgui;
 
         Button.prototype.onPointMove = function (e) {
             if (this.hitTest(e.point))
-                this.stateChange(jgui.ButtonState.Down); else
+                this.stateChange(jgui.ButtonState.Down);
+else
                 this.stateChange(jgui.ButtonState.Normal);
         };
 
@@ -189,7 +189,8 @@ var jgui;
             this.entities = entities;
             if (this.focusIndex >= this.entities.length) {
                 if (this.entities.length == 0)
-                    this.focusIndex = -1; else
+                    this.focusIndex = -1;
+else
                     this.focusIndex = 0;
                 this.updateFocus();
             }
@@ -211,7 +212,8 @@ var jgui;
 
         FocusManager.prototype.updateFocus = function () {
             if (this.focusIndex == -1)
-                delete this.focus.target; else {
+                delete this.focus.target;
+else {
                 this.focus.target = this.entities[this.focusIndex];
                 this.focus.updated();
             }
@@ -221,7 +223,8 @@ var jgui;
             this.game.keyDown.handle(this, this.onKeyDown);
             this.focus = new jgui.Focus();
             if (layer)
-                layer.append(this.focus); else
+                layer.append(this.focus);
+else
                 this.game.scene.append(this.focus);
             this.focusIndex = -1;
             this.updateFocus();
