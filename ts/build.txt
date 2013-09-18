@@ -4,6 +4,10 @@ Button.ts
 TextButton.ts
 Focus.ts
 FocusManager.ts
+Arrow.ts
+BorderLabel.ts
+Spinner.ts
+ListBox.ts
 --out ../js/ui.jgame.js
 --declaration
 --removeComments

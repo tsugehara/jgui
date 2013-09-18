@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ListBox - jgui</title>
+<script type="text/javascript" src="../jgame.js/src/js/jgame.js"></script>
+<script type="text/javascript">
+jg.globalize();
+</script>
+<script type="text/javascript" src="js/ui.jgame.js"></script>
+<script type="text/javascript">
+window.onload = function() {
+	game = new Game(480, 480);
+	game.enablePointHandler();
+	game.enableKeyboardHandler();
+
+	game.preload({
+		chara: "character.png",
+		w: "window.png"
+	});
+	game.loaded.handle(function() {
+		var scene = game.scene;
+		var focusManager = new jgui.FocusManager(game);
+		var listbox = new jgui.ListBox(scene, 100, 104);
+		var item = new jgui.BorderLabel("jgui.BorderLabel");
+		listbox.addItem(item);
+		var item = new jgui.BorderLabel("中央寄せ");
+		item.setTextAlign("center");
+		listbox.addItem(item);
+		var item = new jgui.BorderLabel("右寄せ");
+		item.setTextAlign("right");
+		listbox.addItem(item);
+		var click_item = new jgui.BorderLabel("クリックまたはフォーカスで選択");
+		listbox.addItem(click_item);
+		click_item.enablePointingEvent();
+		click_item.pointDown.handle(function() {
+			click_item.setBackground("orange");
+		});
+		click_item.pointUp.handle(function() {
+			click_item.setBackground(null);
+		});
+		var item = new Label("jg.Label");
+		listbox.addItem(item);
+		var item = new Label("中央寄せラベル");
+		listbox.addItem(item);
+		listbox.moveToCenter(item);
+		var item = new Label("右寄せラベル");
+		listbox.addItem(item);
+		listbox.moveToRight(item);
+		var item = new Label("長い長いとても長い文字列");
+		listbox.addItem(item);
+		var item = new Shape(16, 16, ShapeStyle.Fill, "black", ShapeType.Rect);
+		listbox.addItem(item);
+		var item = new Shape(16, 16, ShapeStyle.Fill, "black", ShapeType.Arc);
+		listbox.addItem(item);
+		var item = new Shape(16, 16, ShapeStyle.Fill, "orange", ShapeType.Arc);
+		listbox.addItem(item);
+		listbox.moveToRight(item);
+		var item = new Shape(16, 16, ShapeStyle.Fill, "red", ShapeType.Arc);
+		listbox.addItem(item);
+		listbox.moveToCenter(item);
+		listbox.moveTo(20, 20);
+		scene.append(listbox);
+		focusManager.addEntity(listbox);
+
+		var listbox = new jgui.ListBox(scene, 100, 200);
+		for (var i=0; i<8; i++)
+			listbox.addItem(new Label("テスト"+(i+1)));
+		listbox.moveTo(20, 160);
+		scene.append(listbox);
+		focusManager.addEntity(listbox);
+
+		//（高さ - 上余白（デフォルト4） / 行高さ（デフォルト20））が表示量なため、5行表示するには104の高さが必要
+		//この例では1ピクセル足らないので4行のみ表示される
+		var listbox = new jgui.ListBox(scene, 200, 103);
+		for (var i=0; i<8; i++)
+			listbox.addItem(new Label("テスト"+(i+1)));
+		listbox.moveTo(20, 360);
+		scene.append(listbox);
+		focusManager.addEntity(listbox);
+
+		var listbox = new jgui.ListBox(scene, 80, 84);
+		for (var i=0; i<5; i++)
+			listbox.addItem(new Label("テスト"+(i+1)));
+		listbox.setBg(game.r("chara"));	//背景を画像で指定
+		listbox.moveTo(240, 20);
+		scene.append(listbox);
+		focusManager.addEntity(listbox);
+
+		var listbox = new jgui.ListBox(scene, 80, 140);
+		//このpaddingはリスト全体ではなく行ごとのpaddingなので、背景に合わせてpaddingを設定すると結構空いてしまう
+		listbox.padding = new Rectangle(8, 8, 8, 8);
+		listbox.row_height = 32;
+		var ui = new UIWindow(80, 160, game.r("w"));
+		listbox.setBg(ui);	//背景をjg.E系（この例ではUIWindow）で指定
+		for (var i=0; i<5; i++)
+			listbox.addItem(new Label("テスト"+(i+1)));
+		listbox.moveTo(240, 160);
+		scene.append(listbox);
+		focusManager.addEntity(listbox);
+
+		scene.enablePointingEvent();
+		focusManager.start();
+		focusManager.selected.handle(function(e) {
+			if (e.click)
+				e.click.fire();
+			else if (e == click_item) {
+				alert("選択されました。\nこのようにクリック操作とフォーカスでの選択操作は別のコードが必要になるので注意してください。");
+			}
+		});
+	});
+}
+</script>
+</head>
+<body>
+	<div>
+		ListBoxは複数の項目からアイテムを選択するための部品です。<br />
+		FocusManagerと組み合わせれば、キーボードでスクロールが可能になりますが、全アイテムがフォーカスの対象となるためリストボックス以外のものがたくさんある画面では使いにくいかもしれません。上手くリストボックスのみの画面にするよう調整する必要があるでしょう。
+	</div>
+	<div id="fps_show">&nbsp;</div>
+</body>
+</html>

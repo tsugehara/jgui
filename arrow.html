@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Arrow - jgui</title>
+<script type="text/javascript" src="../jgame.js/src/js/jgame.js"></script>
+<script type="text/javascript">
+jg.globalize();
+</script>
+<script type="text/javascript" src="js/ui.jgame.js"></script>
+<script type="text/javascript">
+window.onload = function() {
+	game = new Game(480, 480);
+	game.enablePointHandler();
+	game.enableKeyboardHandler();
+
+	var scene = game.scene;
+	var focusManager = new jgui.FocusManager(game);
+	var arrow = new jgui.Arrow(100, 40);
+	arrow.moveTo(0, 0);
+	scene.append(arrow);
+	arrow.click.handle(function() {
+		console.log("button click");
+	});
+	focusManager.addEntity(arrow);
+
+	var arrow = new jgui.Arrow(200, 40);
+	arrow.moveTo(0, 60);
+	scene.append(arrow);
+	focusManager.addEntity(arrow);
+
+	var arrow = new jgui.Arrow(100, 100);
+	arrow.moveTo(0, 120);
+	scene.append(arrow);
+	focusManager.addEntity(arrow);
+
+	var arrow = new jgui.Arrow(100, 20);
+	arrow.moveTo(0, 240);
+	scene.append(arrow);
+	focusManager.addEntity(arrow);
+
+	var arrow = new jgui.Arrow(100, 40);
+	arrow.setDrawOption("rotate", 180);
+	arrow.moveTo(240, 0);
+	scene.append(arrow);
+	arrow.click.handle(function() {
+		console.log("text button click");
+	});
+	focusManager.addEntity(arrow);
+
+	var arrow = new jgui.Arrow(200, 40);
+	arrow.moveTo(240, 60);
+	scene.append(arrow);
+	//focusManager.addEntity(arrow);
+
+	var arrow = new jgui.Arrow(100, 100);
+	arrow.setDrawOption("rotate", 270);
+	arrow.moveTo(240, 120);
+	scene.append(arrow);
+	focusManager.addEntity(arrow);
+
+	var arrow = new jgui.Arrow(100, 20);
+	arrow.setDrawOption("rotate", 90);
+	arrow.moveTo(240, 240);
+	scene.append(arrow);
+	focusManager.addEntity(arrow);
+
+	var arrows = [
+		new jgui.DownArrow(60, 40),
+		new jgui.LeftArrow(60, 40),
+		new jgui.UpArrow(60, 40),
+		new jgui.RightArrow(60, 40)
+	]
+	arrows.forEach(function(arrow, index) {
+		arrow.moveTo(240, 280 + index * 40);
+		scene.append(arrow);
+		focusManager.addEntity(arrow);
+	});
+
+	scene.enablePointingEvent();
+	focusManager.start();
+	focusManager.selected.handle(function(e) {
+		alert("clicked x:"+e.x+",y:"+e.y+" element");
+	});
+}
+</script>
+</head>
+<body>
+	<div>
+		ArrowクラスはButtonクラスを継承した特殊な形のボタンです。カスタムボタンを作る際のソースコードサンプルとしても参考になるでしょう。<br />
+		向きの違うアローを作る場合、setDrawOption("rotate", 90)等による回転と、DownArrow、UpArrow、LeftArrow、RightArrowのサブクラスを使う方法がありますが、setDrawOptionは正方形でない場合当たり判定に問題が出るため、通常はサブクラスを使う方がいいでしょう。
+	</div>
+	<div id="fps_show">&nbsp;</div>
+</body>
+</html>

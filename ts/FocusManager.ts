@@ -1,20 +1,32 @@
 module jgui {
+	export interface ISelfFocusControl extends jg.E {
+		setFocusEntities(fm:FocusManager);
+	}
 	export class FocusManager {
-		entities:jg.E[];
-		game:jg.Game;
-		focus:Focus;
-		focusIndex:number;
-		selected:jg.Trigger;
+		entities: jg.E[];
+		game: jg.Game;
+		focus: Focus;
+		focusIndex: number;
+		selected: jg.Trigger;
+		changed: jg.Trigger;
+		current: jg.E;
 
 		constructor(game:jg.Game) {
 			this.entities = [];
 			this.game = game;
+			this.current = null;
 			this.selected = new jg.Trigger();
+			this.changed = new jg.Trigger();
+			this.focusIndex = -1;
 		}
 
 		addEntity(...e:jg.E[]) {
-			for (var i=0; i<e.length; i++)
-				this.entities.push(e[i]);
+			for (var i=0; i<e.length; i++) {
+				if ((<ISelfFocusControl>e[i]).setFocusEntities)
+					(<ISelfFocusControl>e[i]).setFocusEntities(this);
+				else
+					this.entities.push(e[i]);
+			}
 		}
 
 		removeEntity(...e:jg.E[]) {
@@ -53,22 +65,22 @@ module jgui {
 		}
 
 		updateFocus() {
+			var old = this.current;
 			if (this.focusIndex == -1)
-				delete this.focus.target;
-			else {
-				this.focus.target = this.entities[this.focusIndex];
-				this.focus.updated();
-			}
+				delete this.current;
+			else
+				this.current = this.entities[this.focusIndex];
+			this.focus.focus(this.current);
+			this.changed.fire({
+				old: old,
+				current: this.current
+			});
 		}
 
-		start(layer?:jg.Layer) {
+		start(focus?:Focus) {
 			this.game.keyDown.handle(this, this.onKeyDown);
-			this.focus = new Focus();
-			if (layer)
-				layer.append(this.focus);
-			else
-				this.game.scene.append(this.focus);
-			this.focusIndex = -1;
+			this.focus = focus === undefined ? new Focus() : focus;
+			this.game.scene.append(this.focus);
 			this.updateFocus();
 		}
 

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>BorderLabel - jgui</title>
+<script type="text/javascript" src="../jgame.js/src/js/jgame.js"></script>
+<script type="text/javascript">
+jg.globalize();
+</script>
+<script type="text/javascript" src="js/ui.jgame.js"></script>
+<script type="text/javascript">
+window.onload = function() {
+	game = new Game(480, 480);
+	game.enablePointHandler();
+	game.enableKeyboardHandler();
+	game.preload({w:"character.png"});
+	game.loaded.handle(function() {
+		var scene = game.scene;
+		var focusManager = new jgui.FocusManager(game);
+		var label = new jgui.BorderLabel("test");
+		label.moveTo(0, 0);
+		scene.append(label);
+		focusManager.addEntity(label);
+
+		var label = new jgui.BorderLabel("あいうえお");
+		label.moveTo(0, 60);
+		scene.append(label);
+		focusManager.addEntity(label);
+
+		var label = new jgui.BorderLabel("枠線無し");
+		label.moveTo(0, 120);
+		label.setBorder(null);
+		scene.append(label);
+		focusManager.addEntity(label);
+
+		var label = new jgui.BorderLabel("余白の変更");
+		label.moveTo(0, 160);
+		label.setPadding(new jg.Rectangle(16, 16, 16, 16));
+		scene.append(label);
+		focusManager.addEntity(label);
+
+		var label = new jgui.BorderLabel("枠線色の変更");
+		label.setBorder("red");
+		label.moveTo(0, 200);
+		scene.append(label);
+		focusManager.addEntity(label);
+
+		var label = new jgui.BorderLabel("枠線色を4色別々に設定");
+		label.setBorder(["black", "yellow", "blue", "orange"]);
+		label.moveTo(240, 0);
+		scene.append(label);
+		focusManager.addEntity(label);
+
+		var label = new jgui.BorderLabel("枠線色と背景の変更");
+		label.setBorder(["black", "yellow", "blue", "orange"], "orange");
+		label.moveTo(240, 40);
+		scene.append(label);
+		focusManager.addEntity(label);
+
+		var label = new jgui.BorderLabel("背景の変更");
+		label.setBackground("orange");
+		label.moveTo(240, 80);
+		scene.append(label);
+		focusManager.addEntity(label);
+
+		var label = new jgui.BorderLabel("アニメーション");
+		label.moveTo(240, 120);
+		label.tl().scaleTo(2, 1000).rotateBy(360, 1000).scaleTo(1, 1000).rotateBy(-360, 1000).loop();
+		scene.append(label);
+		focusManager.addEntity(label);
+
+		var label = new jgui.BorderLabel("背景グラデーションの設定");
+		label.setBackground(jg.JGUtil.createLinearGradient(
+			new jg.Rectangle(label.width / 2, 0, label.width / 2, label.height),
+			["rgba(240,240,255,1)", "rgba(80, 120, 190, 1)"]
+		));
+		label.moveTo(240, 160);
+		scene.append(label);
+		focusManager.addEntity(label);
+
+		var label = new jgui.BorderLabel("背景画像の設定");
+		label.setBackground(game.r("w"));
+		label.moveTo(240, 200);
+		scene.append(label);
+		focusManager.addEntity(label);
+
+		var label = new jgui.BorderLabel("固定幅");
+		label.setFixWidth(100);
+		label.moveTo(0, 240);
+		scene.append(label);
+		focusManager.addEntity(label);
+
+		var label = new jgui.BorderLabel("右寄せ");
+		label.setFixWidth(100);
+		label.setTextAlign("right");
+		label.moveTo(0, 280);
+		scene.append(label);
+		focusManager.addEntity(label);
+
+		var label = new jgui.BorderLabel("右寄せ2");
+		label.setFixWidth(100);
+		label.setTextAlign("end");
+		label.moveTo(0, 320);
+		scene.append(label);
+		focusManager.addEntity(label);
+
+		var label = new jgui.BorderLabel("中央寄せ");
+		label.setFixWidth(100);
+		label.setTextAlign("center");
+		label.moveTo(0, 360);
+		scene.append(label);
+		focusManager.addEntity(label);
+
+		var label = new jgui.BorderLabel("バグる例");
+		label.setTextBaseline("middle");
+		label.moveTo(240, 240);
+		scene.append(label);
+		focusManager.addEntity(label);
+
+		var label = new jgui.BorderLabel("バグる例2");
+		label.setTextBaseline("bottom");
+		label.moveTo(240, 280);
+		scene.append(label);
+		focusManager.addEntity(label);
+
+		scene.enablePointingEvent();
+		focusManager.start();
+		focusManager.selected.handle(function(e) {
+			alert("clicked x:"+e.x+",y:"+e.y+" element");
+		});
+	});
+}
+</script>
+</head>
+<body>
+	<div>
+		BorderLabelクラスは、Labelクラスに枠線を加えたものです。簡単な部品ですが、入力可能な部品であることをユーザに示すのに役立ちます。<br />
+		なお、現状LabelクラスのsetTextBaselineなどでベースラインを設定した場合には問題があります。
+	</div>
+	<div id="fps_show">&nbsp;</div>
+</body>
+</html>

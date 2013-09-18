@@ -2,74 +2,27 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<title>jgui - jgame.js User Interface Library</title>
 <script type="text/javascript" src="../jgame.js/src/js/jgame.js"></script>
-<script type="text/javascript">
-jg.globalize();
-</script>
 <script type="text/javascript" src="js/ui.jgame.js"></script>
-<script type="text/javascript">
-window.onload = function() {
-	game = new Game(480, 480);
-	game.enablePointHandler();
-	game.enableKeyboardHandler();
-
-	var scene = game.scene;
-	var focusManager = new jgui.FocusManager(game);
-	var btn = new jgui.Button(100, 40);
-	btn.moveTo(0, 0);
-	scene.append(btn);
-	btn.click.handle(function() {
-		console.log("button click");
-	});
-	focusManager.addEntity(btn);
-
-	var btn = new jgui.Button(200, 40);
-	btn.moveTo(0, 60);
-	scene.append(btn);
-	focusManager.addEntity(btn);
-
-	var btn = new jgui.Button(100, 100);
-	btn.moveTo(0, 120);
-	scene.append(btn);
-	focusManager.addEntity(btn);
-
-	var btn = new jgui.Button(100, 20);
-	btn.moveTo(0, 240);
-	scene.append(btn);
-	focusManager.addEntity(btn);
-
-	var textBtn = new jgui.TextButton("START", 100, 40);
-	textBtn.moveTo(240, 0);
-	scene.append(textBtn);
-	textBtn.click.handle(function() {
-		console.log("text button click");
-	});
-	focusManager.addEntity(textBtn);
-
-	var textBtn = new jgui.TextButton("START", 200, 40);
-	textBtn.moveTo(240, 60);
-	scene.append(textBtn);
-	//focusManager.addEntity(textBtn);
-
-	var textBtn = new jgui.TextButton("START", 100, 100);
-	textBtn.moveTo(240, 120);
-	scene.append(textBtn);
-	focusManager.addEntity(textBtn);
-
-	var textBtn = new jgui.TextButton("START", 100, 20);
-	textBtn.moveTo(240, 240);
-	scene.append(textBtn);
-	focusManager.addEntity(textBtn);
-
-	scene.enablePointingEvent();
-	focusManager.start();
-	focusManager.selected.handle(function(e) {
-		alert("clicked x:"+e.x+",y:"+e.y+" element");
-	});
-}
-</script>
 </head>
 <body>
-	<div id="fps_show">&nbsp;</div>
+	<div>
+		<h1>jgui - jgame.js User Interface Library</h1>
+	</div>
+	<div>
+		jguiはjgame.js用UI部品モジュールです。<br />
+		基本的な機能しか提供しないjgame.jsにボタンや数値入力用Spinnerなどのコントロール、フォーカス管理などの機能を提供し、開発者の負担を軽減します。
+	</div>
+	<div>
+		<ul>
+			<li><a href="button.html">Button</a></li>
+			<li><a href="focus.html">Focus</a></li>
+			<li><a href="arrow.html">Arrow</a></li>
+			<li><a href="border-label.html">BorderLabel</a></li>
+			<li><a href="spinner.html">Spinner</a></li>
+			<li><a href="listbox.html">Listbox</a></li>
+		</ul>
+	</div>
 </body>
 </html>

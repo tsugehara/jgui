@@ -4,18 +4,27 @@ module jgui {
 		color:any;
 		constructor() {
 			super();
-			this.disableTransform = true;
 			this.color = "#ffff00";
 		}
 
 		focus(target:jg.E) {
 			this.target = target;
+			if (target) {
+				this.x = target.x;
+				this.y = target.y;
+				if (target.parent != this.parent) {
+					this.remove();
+					target.parent.append(this);
+				}
+				this.width = target.width;
+				this.height = target.height;
+			}
+			this.updated();
 		}
 
 		draw(context:CanvasRenderingContext2D) {
 			if (! this.target)
 				return;
-			context.translate(this.target.x, this.target.y);
 			this.scene.game.renderer.useDrawOption(this.target, context);
 			context.beginPath();
 			context.strokeStyle = this.color;

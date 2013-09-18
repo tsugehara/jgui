@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Spinner - jgui</title>
+<script type="text/javascript" src="../jgame.js/src/js/jgame.js"></script>
+<script type="text/javascript">
+jg.globalize();
+</script>
+<script type="text/javascript" src="js/ui.jgame.js"></script>
+<script type="text/javascript">
+window.onload = function() {
+	game = new Game(480, 480);
+	game.enablePointHandler();
+	game.enableKeyboardHandler();
+
+	var scene = game.scene;
+	var focusManager = new jgui.FocusManager(game);
+	var spinner = new jgui.Spinner(80, 50);
+	spinner.moveTo(0, 0);
+	scene.append(spinner);
+	focusManager.addEntity(spinner);
+
+	var spinner = new jgui.Spinner(70, 50);
+	spinner.moveTo(0, 80);
+	spinner.changed.handle(function(e) {
+		var val = e.getValue();
+		if (val > 9)
+			e.setValue(val - 10);
+		else if (val < 0)
+			e.setValue(val + 10);
+	});
+	scene.append(spinner);
+	focusManager.addEntity(spinner);
+
+	var spinner = new jgui.Spinner(60, 50);
+	spinner.moveTo(0, 160);
+	spinner.setValue(100);
+	scene.append(spinner);
+	focusManager.addEntity(spinner);
+
+	var spinner = new jgui.Spinner(50, 50);
+	spinner.moveTo(0, 240);
+	spinner.step = 10;
+	spinner.setValue(0);
+	scene.append(spinner);
+	focusManager.addEntity(spinner);
+
+	var spinner = new jgui.Spinner(40, 50);
+	spinner.moveTo(0, 320);
+	spinner.step = 0.1;
+	spinner.setValue(0);
+	scene.append(spinner);
+	focusManager.addEntity(spinner);
+
+	var spinner = new jgui.Spinner(30, 50);
+	var test = function(e) {
+		var val = prompt("数値入力", e.parent.getValue());
+		if (! val)
+			return;
+		val = Number(val);
+		if (isNaN(val))
+			return;
+		e.parent.setValue(val);
+	}
+	spinner.moveTo(240, 0);
+	spinner.label_focus = true;
+	spinner.text_box.enablePointingEvent();
+	spinner.text_box.pointDown.handle(function(e) {
+		test(e.entity);
+	});
+	scene.append(spinner);
+	focusManager.addEntity(spinner);
+
+	var spinner = new jgui.Spinner(100, 200);
+	spinner.arrow_height = 32;
+	spinner.text_align = "center";
+	spinner.build();
+	spinner.moveTo(240, 80);
+	scene.append(spinner);
+	focusManager.addEntity(spinner);
+
+	scene.enablePointingEvent();
+	focusManager.start();
+	focusManager.selected.handle(function(e) {
+		if (e.click)
+			e.click.fire();
+		else
+			test(e);
+	});
+}
+</script>
+</head>
+<body>
+	<div>
+		Spinnerは簡単なボタンによる数値の入力部品を提供します。<br />
+		数値の直接入力には対応していない、小数は二桁までしか扱えないなど、いくつかの制約があります。
+	</div>
+	<div id="fps_show">&nbsp;</div>
+</body>
+</html>
