@@ -1,4 +1,7 @@
 module jgui {
+	//Note: ちょっと今は特殊な作りになってる
+	//Note: 本当はjg.UIWindowを継承したいけど、UIWindowのパディング管理がいまいちなので独自実装
+	//Note: そのうちjgame.jsがバージョンアップしたら、UIWindow継承型に直そうと思う
 	export class ListBox extends jg.E {
 		row_height: number;
 		layer: jg.Layer;
