@@ -13,7 +13,8 @@ module jgui {
 				this.x = target.x;
 				this.y = target.y;
 				if (target.parent != this.parent) {
-					this.remove();
+					if (this.parent)
+						this.remove();
 					target.parent.append(this);
 				}
 				this.width = target.width;
