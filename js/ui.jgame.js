@@ -249,7 +249,8 @@ else
 
         FocusManager.prototype.end = function () {
             this.game.keyDown.remove(this, this.onKeyDown);
-            this.focus.remove();
+            if (this.focus.parent)
+                this.focus.remove();
         };
 
         FocusManager.prototype.onKeyDown = function (e) {

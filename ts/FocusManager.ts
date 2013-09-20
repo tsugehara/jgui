@@ -86,7 +86,8 @@ module jgui {
 
 		end() {
 			this.game.keyDown.remove(this, this.onKeyDown);
-			this.focus.remove();
+			if (this.focus.parent)
+				this.focus.remove();
 		}
 
 		onKeyDown(e:jg.InputKeyboardEvent) {
